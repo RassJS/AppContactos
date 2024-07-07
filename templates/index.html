@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login y Registro</title>
+    <link rel="stylesheet" href="./../static/styles.css">
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-toggle">
+            <button id="login-toggle" class="active" onclick="toggleForm('login')">Iniciar Sesión</button>
+            <button id="register-toggle" onclick="toggleForm('register')">Registrarse</button>
+        </div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        <form id="login-form" class="form" action="{{ url_for('index') }}" method="POST" onsubmit="return validarLoginForm()">
+            <h2>Iniciar Sesión</h2>
+            <input type="email" name="email" placeholder="Correo Electrónico" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="submit" name="login">Ingresar</button>
+        </form>
+        <form id="register-form" class="form" action="{{ url_for('index') }}" method="POST" onsubmit="return validarRegisterForm()" style="display:none;">
+            <h2>Registrarse</h2>
+            <input type="email" name="email" placeholder="Correo Electrónico" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="submit" name="register">Registrarse</button>
+        </form>
+    </div>
+    <script>
+        
+        function toggleForm(formType) {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const loginToggle = document.getElementById('login-toggle');
+            const registerToggle = document.getElementById('register-toggle');
+
+            if (formType === 'login') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                loginToggle.classList.add('active');
+                registerToggle.classList.remove('active');
+            } else if (formType === 'register') {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                loginToggle.classList.remove('active');
+                registerToggle.classList.add('active');
+            }
+        }
+
+        
+        function validarRegisterForm() {
+            const email = document.forms["register-form"]["email"].value;
+            const password = document.forms["register-form"]["password"].value;
+            if (email == "" || password == "") {
+                alert("Todos los campos son obligatorios.");
+                return false;
+            }
+            if (!validarEmail(email)) {
+                alert("Por favor ingrese un correo electrónico válido.");
+                return false;
+            }
+            return true;
+        }
+
+        // Validación del formulario de inicio de sesión
+        function validarLoginForm() {
+            const email = document.forms["login-form"]["email"].value;
+            const password = document.forms["login-form"]["password"].value;
+            if (email == "" || password == "") {
+                alert("Todos los campos son obligatorios.");
+                return false;
+            }
+            if (!validarEmail(email)) {
+                alert("Por favor ingrese un correo electrónico válido.");
+                return false;
+            }
+            return true;
+        }
+
+        
+        function validarEmail(email) {
+            const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            return re.test(email);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginToggle = document.getElementById('login-toggle');
+            loginToggle.classList.add('active');
+        });
+    </script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Contactos</title>
+    <link rel="stylesheet" href="./../static/dashboard.css">
+</head>
+<body>
+    <h1>Agenda de Contactos</h1>
+    <form name="contactForm" action="{{ url_for('add_contact') }}" method="POST" onsubmit="return validateForm()">
+        <input type="text" name="name" placeholder="Nombre del Contacto" required>
+        <input type="text" name="phone" placeholder="Telefono del Contacto" required pattern="^[0-9\s\-\+\(\)]+$" title="El telefono debe contener solo numeros y caracteres especiales permitidos (+, -, (, )).">
+        <button type="submit">Agregar Contacto</button>
+    </form>
+    <h2>Tus Contactos</h2>
+    <ul>
+        {% for contact in contacts %}
+            <li>
+                {{ contact.name }} - {{ contact.phone }}
+                <a href="{{ url_for('delete_contact', contact_id=contact.id) }}">Eliminar</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+    <script>
+        function validateForm() {
+            var name = document.forms["contactForm"]["name"].value;
+            var phone = document.forms["contactForm"]["phone"].value;
+            var phonePattern = /^[0-9\s\-\+\(\)]+$/;
+
+            if (name == "") {
+                alert("El nombre no puede estar vacío.");
+                return false;
+            }
+
+            if (phone == "") {
+                alert("El telefono no puede estar vacío.");
+                return false;
+            }
+
+            if (!phone.match(phonePattern)) {
+                alert("El telefono debe contener solo numeros y caracteres especiales permitidos (+, -, (, )).");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+</html>
+
