@@ -7,6 +7,7 @@ La informacion de los usuarios y los contactos se almacena en una base de datos 
 
 # Instalacion
 Clonar el repositorio
+
 git clone https://github.com/tuusuario/AppContactos.git
 
 cd AppContactos
@@ -14,6 +15,7 @@ cd AppContactos
 # Crear y activar un entorno virtual
 
 python -m venv venv
+
 source venv/bin/activate 
 
 # Instalar dependencias
